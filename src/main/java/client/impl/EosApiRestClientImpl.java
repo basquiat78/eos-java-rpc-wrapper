@@ -103,7 +103,7 @@ public class EosApiRestClientImpl implements EosApiRestClient {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> AbiJsonToBin abiJsonToBin(String code, String action, T args) {
         return EosApiServiceGenerator.executeSync(eosChainApiService.abiJsonToBin(new AbiJsonToBinRequest(code, action, args)));
     }
@@ -177,8 +177,12 @@ public class EosApiRestClientImpl implements EosApiRestClient {
     }
 
     @Override
-    public List<List<String>> listKeys(){
-       return EosApiServiceGenerator.executeSync(eosWalletApiService.listKeys());
+    public List<List<String>> listKeys(String walletName, String walletPassword){
+    	List<String> requestFields = new ArrayList<>(2);
+
+        requestFields.add(walletName);
+        requestFields.add(walletPassword);
+       return EosApiServiceGenerator.executeSync(eosWalletApiService.listKeys(requestFields));
     }
 
     @Override
